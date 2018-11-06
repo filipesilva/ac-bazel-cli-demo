@@ -1,6 +1,4 @@
-[![CircleCI](https://circleci.com/gh/alexeagle/angular-bazel-example.svg?style=svg)](https://circleci.com/gh/alexeagle/angular-bazel-example)
-
-# Example of building an Angular app with Bazel
+# Demo of building an Angular CLI app with Bazel
 
 **This is experimental! There may be breaking changes.**
 
@@ -15,58 +13,18 @@ Follow https://github.com/angular/angular/issues/19058 for updates.
 
 ## Installation
 
-Install Bazel from the distribution, see [install] instructions.
-On Mac, if you have Homebrew installed you can
+Run `yarn` to install dependencies.
 
 ```bash
-brew tap bazelbuild/tap
-brew tap-pin bazelbuild/tap
-brew install bazel
+$ yarn
 ```
-
-Bazel will install a hermetic version of Node, npm, and Yarn when
-you run the first build.
-
-[install]: https://bazel.build/versions/master/docs/install.html
-
-Also add `ibazel` to your `$PATH`:
-
-```
-yarn global add @bazel/ibazel
-```
-
-or
-
-```
-npm install -g @bazel/ibazel
-```
-
-## Setup
-
-Before building the app, we install packages, just as with any npm-based development workflow.
-
-```bash
-$ yarn install
-```
-
-or
-
-```bash
-$ npm install
-```
-
-For the time being, you need to run your locally installed `yarn` or `npm` to install dependencies
-as shown above. This is because we pull down the `@bazel/typescript` bazel dependency from npm and
-that dependency needs to be in place before we can build the project. We're working to
-resolve this bootstrapping issue. Soon you will be able to skip this step and just do your first
-Bazel build without needing any install step first.
 
 ## Development
 
 Next we'll run the development server:
 
 ```bash
-$ yarn serve
+$ ng serve
 ```
 
 > This script runs `ibazel`, which is a "watch mode"
@@ -88,13 +46,13 @@ Control-C twice to kill the devserver and also stop `ibazel`.
 We can also run all the unit tests:
 
 ```bash
-$ yarn test
+$ ng test
 ```
 
 Or run the end-to-end tests:
 
 ```bash
-$ yarn e2e
+$ ng e2e
 ```
 
 In this example, there is a unit test for the `hello-world` component which uses
@@ -111,7 +69,7 @@ requires re-optimizing the app. This example uses Rollup and Uglify, but other
 bundlers can be integrated with Bazel.
 
 ```bash
-$ yarn serve-prod
+$ ng serve --prod
 ```
 
 ### Code splitting
@@ -120,8 +78,8 @@ The production bundle is code split and the `/` and `/todos` routes
 are lazy loaded. Code splitting is handled by the rollup_bundle rule
 which now supports the new code splitting feature in rollup.
 
-Note: code splitting is _not_ supported in development mode yet so the
-`//src:devserver` target does not serve a code split bundle. For this
+Note: code splitting is _not_ supported in development mode yet so
+`ng serve` does not serve a code split bundle. For this
 reason, development and production use different main entry points
 (`main.dev.ts` and `main.ts`) and different root modules
 (`app.module.dev.ts` and `app.module.ts`). The difference in
@@ -129,3 +87,8 @@ the entry points and modules is how routes are loaded, with production
 lazy loading routes and development using a custom `NgModuleFactoryLoader`
 loader to disable lazy loading. `enableProdMode()` is
 also called in the production entry point.
+
+## Windows support
+
+- `ng serve` will not work on Windows, but `ng serve --prod` will.
+- `ng e2e` does not currently work on Windows.
